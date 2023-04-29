@@ -221,7 +221,6 @@ describe("/api/users/:userId/followed/by/followerId", () => {
     const result = await User.findOne({ _id: newUser2._id }).select(
       "followers"
     );
-
     expect(result.followers).toContainEqual(newUser1._id);
   });
   test("unauthenticated users can follow another user", async () => {

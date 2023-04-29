@@ -14,6 +14,7 @@ const postSchema = new Schema(
       contentType: String,
     },
     owner: { type: Schema.ObjectId, ref: "User" },
+    likes: [{ type: Schema.ObjectId, ref: "User" }],
     updated: Date,
   },
 

@@ -107,6 +107,52 @@ const readAll = async (req, res) => {
     return res.status(400).json({ error: "Sorry can't retrieve users" });
   }
 };
+const follow = async (req, res) => {
+  try {
+    const followerUser = await User.findOne({ _id: req.params.followerId });
+    console.log("follower", followerUser);
+    if (!followerUser) {
+      return res.status(404).json({ error: "Sorry user is not recognized" });
+    }
+    const followers = await User.findById(req.user._id)
+      .select("followers")
+      .populate("followers", "_id name")
+      .exec();
+    console.log(followers);
+    const following = followers.followers.includes(req.params.followerId);
+
+    if (following) {
+      return res
+        .status(400)
+        .json({ error: `You are already following ${req.user.name}` });
+    }
+    await User.findOneAndUpdate(
+      { _id: req.user._id },
+      {
+        $push: {
+          followers: req.params.followerId,
+        },
+      },
+      { new: true }
+    );
+    await User.findOneAndUpdate(
+      {
+        _id: req.params.followerId,
+      },
+      {
+        $push: {
+          following: req.user._id,
+        },
+      },
+      { new: true }
+    );
+    return res.json({
+      message: `you successfully followed ${req.user.name}`,
+    });
+  } catch (err) {
+    return res.status(400).json({ error: "Sorry something wrong happened" });
+  }
+};
 module.exports = {
   passwordComplexity,
   create,
@@ -115,4 +161,5 @@ module.exports = {
   update,
   remove,
   userById,
+  follow,
 };
