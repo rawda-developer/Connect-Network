@@ -156,3 +156,14 @@ describe("PUT /api/users/:userId", () => {
     expect(res.body.image).toBeUndefined();
   });
 });
+describe("DELETE /api/users/:userId", () => {
+  test("authorized user can delete her own account", async () => {
+    const newUser = await createUser();
+    const jwt = await getUserHeader();
+    const res = await request
+      .delete(`/api/users/${newUser._id}`)
+      .set("Authorization", `Bearer ${jwt}`);
+    expect(res.statusCode).toEqual(200)
+    expect(res.body.message).toEqual("User deleted successfully")
+  });
+});

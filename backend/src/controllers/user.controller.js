@@ -91,4 +91,12 @@ const update = async (req, res) => {
     }
   });
 };
-module.exports = { passwordComplexity, create, read, update, userById };
+const remove = async (req, res) => {
+  try {
+    await User.deleteOne({ _id: req.user._id });
+    return res.json({ message: "User deleted successfully" });
+  } catch (err) {
+    return res.status(400).json({ error: "Sorry something wrong happened" });
+  }
+};
+module.exports = { passwordComplexity, create, read, update, remove, userById };
