@@ -43,5 +43,21 @@ const create = async (req, res) => {
     });
   }
 };
+const userById = async (req, res, next, userId) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.status(404).json({
+      error: "User not found",
+    });
+  }
+  user.hashedPassword = undefined;
+  user.photo = undefined;
+  req.user = user;
+  next();
+};
+const read = async (req, res) => {
+  const user = req.user;
 
-module.exports = { passwordComplexity, create };
+  res.json(user);
+};
+module.exports = { passwordComplexity, create, read, userById };

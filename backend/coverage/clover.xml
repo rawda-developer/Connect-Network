@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1682707505329" clover="3.2.0">
-  <project timestamp="1682707505329" name="All files">
-    <metrics statements="303" coveredstatements="239" conditionals="27" coveredconditionals="15" methods="11" coveredmethods="8" elements="341" coveredelements="262" complexity="0" loc="303" ncloc="303" packages="7" files="10" classes="10"/>
+<coverage generated="1682763220357" clover="3.2.0">
+  <project timestamp="1682763220358" name="All files">
+    <metrics statements="330" coveredstatements="267" conditionals="34" coveredconditionals="20" methods="14" coveredmethods="12" elements="378" coveredelements="299" complexity="0" loc="330" ncloc="330" packages="7" files="10" classes="10"/>
     <package name="src">
       <metrics statements="40" coveredstatements="21" conditionals="2" coveredconditionals="1" methods="0" coveredmethods="0"/>
-      <file name="server.js" path="/home/rawda/Dev/open-source/connect-network/backend/src/server.js">
+      <file name="server.js" path="/home/rawda/Dev/open-source/portfolio-projects/connect-network/backend/src/server.js">
         <metrics statements="40" coveredstatements="21" conditionals="2" coveredconditionals="1" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -50,7 +50,7 @@
     </package>
     <package name="src.config">
       <metrics statements="10" coveredstatements="10" conditionals="2" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="index.js" path="/home/rawda/Dev/open-source/connect-network/backend/src/config/index.js">
+      <file name="index.js" path="/home/rawda/Dev/open-source/portfolio-projects/connect-network/backend/src/config/index.js">
         <metrics statements="10" coveredstatements="10" conditionals="2" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -65,56 +65,62 @@
       </file>
     </package>
     <package name="src.controllers">
-      <metrics statements="91" coveredstatements="73" conditionals="11" coveredconditionals="7" methods="3" coveredmethods="3"/>
-      <file name="auth.controller.js" path="/home/rawda/Dev/open-source/connect-network/backend/src/controllers/auth.controller.js">
-        <metrics statements="44" coveredstatements="36" conditionals="4" coveredconditionals="2" methods="1" coveredmethods="1"/>
+      <metrics statements="113" coveredstatements="89" conditionals="17" coveredconditionals="11" methods="6" coveredmethods="6"/>
+      <file name="auth.controller.js" path="/home/rawda/Dev/open-source/portfolio-projects/connect-network/backend/src/controllers/auth.controller.js">
+        <metrics statements="50" coveredstatements="40" conditionals="7" coveredconditionals="4" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
-        <line num="5" count="1" type="stmt"/>
-        <line num="6" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="7" count="2" type="stmt"/>
-        <line num="8" count="2" type="stmt"/>
-        <line num="9" count="2" type="stmt"/>
-        <line num="10" count="2" type="stmt"/>
-        <line num="11" count="2" type="cond" truecount="0" falsecount="1"/>
-        <line num="12" count="0" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
-        <line num="14" count="0" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="16" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="17" count="1" type="stmt"/>
-        <line num="18" count="1" type="stmt"/>
-        <line num="19" count="1" type="stmt"/>
-        <line num="20" count="1" type="stmt"/>
-        <line num="21" count="1" type="stmt"/>
+        <line num="5" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="6" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="12" count="3" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="16" count="3" type="cond" truecount="0" falsecount="1"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="3" type="cond" truecount="1" falsecount="0"/>
         <line num="22" count="1" type="stmt"/>
         <line num="23" count="1" type="stmt"/>
         <line num="24" count="1" type="stmt"/>
-        <line num="25" count="1" type="stmt"/>
-        <line num="26" count="1" type="stmt"/>
-        <line num="27" count="1" type="stmt"/>
-        <line num="28" count="1" type="stmt"/>
-        <line num="29" count="1" type="stmt"/>
-        <line num="30" count="1" type="stmt"/>
-        <line num="31" count="1" type="stmt"/>
-        <line num="32" count="1" type="stmt"/>
-        <line num="33" count="1" type="stmt"/>
-        <line num="34" count="1" type="stmt"/>
-        <line num="35" count="1" type="stmt"/>
-        <line num="36" count="1" type="stmt"/>
-        <line num="37" count="1" type="stmt"/>
-        <line num="38" count="2" type="cond" truecount="0" falsecount="1"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="40" count="0" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
-        <line num="42" count="0" type="stmt"/>
-        <line num="43" count="2" type="stmt"/>
-        <line num="44" count="1" type="stmt"/>
+        <line num="25" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="26" count="2" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="28" count="2" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="30" count="2" type="stmt"/>
+        <line num="31" count="2" type="stmt"/>
+        <line num="32" count="2" type="stmt"/>
+        <line num="33" count="2" type="stmt"/>
+        <line num="34" count="2" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="38" count="2" type="stmt"/>
+        <line num="39" count="2" type="stmt"/>
+        <line num="40" count="2" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="42" count="2" type="stmt"/>
+        <line num="43" count="3" type="cond" truecount="0" falsecount="1"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="3" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="50" count="1" type="stmt"/>
       </file>
-      <file name="user.controller.js" path="/home/rawda/Dev/open-source/connect-network/backend/src/controllers/user.controller.js">
-        <metrics statements="47" coveredstatements="37" conditionals="7" coveredconditionals="5" methods="2" coveredmethods="2"/>
+      <file name="user.controller.js" path="/home/rawda/Dev/open-source/portfolio-projects/connect-network/backend/src/controllers/user.controller.js">
+        <metrics statements="63" coveredstatements="49" conditionals="10" coveredconditionals="7" methods="4" coveredmethods="4"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -160,13 +166,29 @@
         <line num="43" count="0" type="stmt"/>
         <line num="44" count="0" type="stmt"/>
         <line num="45" count="3" type="stmt"/>
-        <line num="46" count="1" type="stmt"/>
+        <line num="46" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="47" count="1" type="stmt"/>
+        <line num="48" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="1" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="56" count="1" type="stmt"/>
+        <line num="57" count="1" type="stmt"/>
+        <line num="58" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="59" count="1" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+        <line num="61" count="1" type="stmt"/>
+        <line num="62" count="1" type="stmt"/>
+        <line num="63" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.models">
       <metrics statements="77" coveredstatements="70" conditionals="9" coveredconditionals="5" methods="3" coveredmethods="3"/>
-      <file name="user.model.js" path="/home/rawda/Dev/open-source/connect-network/backend/src/models/user.model.js">
+      <file name="user.model.js" path="/home/rawda/Dev/open-source/portfolio-projects/connect-network/backend/src/models/user.model.js">
         <metrics statements="77" coveredstatements="70" conditionals="9" coveredconditionals="5" methods="3" coveredmethods="3"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -207,49 +229,49 @@
         <line num="37" count="1" type="stmt"/>
         <line num="38" count="1" type="stmt"/>
         <line num="39" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="40" count="6" type="stmt"/>
-        <line num="41" count="6" type="stmt"/>
-        <line num="42" count="6" type="stmt"/>
-        <line num="43" count="6" type="stmt"/>
+        <line num="40" count="7" type="stmt"/>
+        <line num="41" count="7" type="stmt"/>
+        <line num="42" count="7" type="stmt"/>
+        <line num="43" count="7" type="stmt"/>
         <line num="44" count="1" type="stmt"/>
         <line num="45" count="0" type="stmt"/>
         <line num="46" count="1" type="stmt"/>
         <line num="47" count="1" type="stmt"/>
         <line num="48" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="49" count="4" type="cond" truecount="0" falsecount="1"/>
+        <line num="49" count="5" type="cond" truecount="0" falsecount="1"/>
         <line num="50" count="0" type="stmt"/>
         <line num="51" count="0" type="stmt"/>
-        <line num="52" count="4" type="cond" truecount="0" falsecount="1"/>
+        <line num="52" count="5" type="cond" truecount="0" falsecount="1"/>
         <line num="53" count="0" type="stmt"/>
         <line num="54" count="0" type="stmt"/>
         <line num="55" count="1" type="stmt"/>
         <line num="56" count="1" type="stmt"/>
         <line num="57" count="1" type="stmt"/>
         <line num="58" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="59" count="2" type="stmt"/>
+        <line num="59" count="3" type="stmt"/>
         <line num="60" count="1" type="stmt"/>
         <line num="61" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="62" count="8" type="cond" truecount="0" falsecount="1"/>
-        <line num="63" count="8" type="stmt"/>
-        <line num="64" count="8" type="stmt"/>
-        <line num="65" count="8" type="stmt"/>
-        <line num="66" count="8" type="stmt"/>
-        <line num="67" count="8" type="stmt"/>
-        <line num="68" count="8" type="cond" truecount="0" falsecount="1"/>
+        <line num="62" count="10" type="cond" truecount="0" falsecount="1"/>
+        <line num="63" count="10" type="stmt"/>
+        <line num="64" count="10" type="stmt"/>
+        <line num="65" count="10" type="stmt"/>
+        <line num="66" count="10" type="stmt"/>
+        <line num="67" count="10" type="stmt"/>
+        <line num="68" count="10" type="cond" truecount="0" falsecount="1"/>
         <line num="69" count="0" type="stmt"/>
         <line num="70" count="0" type="stmt"/>
         <line num="71" count="1" type="stmt"/>
         <line num="72" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="73" count="6" type="stmt"/>
-        <line num="74" count="6" type="stmt"/>
+        <line num="73" count="7" type="stmt"/>
+        <line num="74" count="7" type="stmt"/>
         <line num="75" count="1" type="stmt"/>
         <line num="76" count="1" type="stmt"/>
         <line num="77" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.routes">
-      <metrics statements="15" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="auth.route.js" path="/home/rawda/Dev/open-source/connect-network/backend/src/routes/auth.route.js">
+      <metrics statements="20" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="auth.route.js" path="/home/rawda/Dev/open-source/portfolio-projects/connect-network/backend/src/routes/auth.route.js">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -258,8 +280,8 @@
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
       </file>
-      <file name="user.route.js" path="/home/rawda/Dev/open-source/connect-network/backend/src/routes/user.route.js">
-        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="user.route.js" path="/home/rawda/Dev/open-source/portfolio-projects/connect-network/backend/src/routes/user.route.js">
+        <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -269,11 +291,16 @@
         <line num="7" count="1" type="stmt"/>
         <line num="8" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.utils">
       <metrics statements="47" coveredstatements="34" conditionals="2" coveredconditionals="1" methods="3" coveredmethods="1"/>
-      <file name="dbConnection.js" path="/home/rawda/Dev/open-source/connect-network/backend/src/utils/dbConnection.js">
+      <file name="dbConnection.js" path="/home/rawda/Dev/open-source/portfolio-projects/connect-network/backend/src/utils/dbConnection.js">
         <metrics statements="36" coveredstatements="23" conditionals="2" coveredconditionals="1" methods="3" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -312,7 +339,7 @@
         <line num="35" count="0" type="stmt"/>
         <line num="36" count="1" type="stmt"/>
       </file>
-      <file name="dbSettings.js" path="/home/rawda/Dev/open-source/connect-network/backend/src/utils/dbSettings.js">
+      <file name="dbSettings.js" path="/home/rawda/Dev/open-source/portfolio-projects/connect-network/backend/src/utils/dbSettings.js">
         <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -328,31 +355,31 @@
       </file>
     </package>
     <package name="tests">
-      <metrics statements="23" coveredstatements="16" conditionals="1" coveredconditionals="1" methods="2" coveredmethods="1"/>
-      <file name="authHeader.js" path="/home/rawda/Dev/open-source/connect-network/backend/tests/authHeader.js">
-        <metrics statements="23" coveredstatements="16" conditionals="1" coveredconditionals="1" methods="2" coveredmethods="1"/>
+      <metrics statements="23" coveredstatements="23" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+      <file name="authHeader.js" path="/home/rawda/Dev/open-source/portfolio-projects/connect-network/backend/tests/authHeader.js">
+        <metrics statements="23" coveredstatements="23" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="7" count="2" type="stmt"/>
-        <line num="8" count="2" type="stmt"/>
-        <line num="9" count="2" type="stmt"/>
-        <line num="10" count="2" type="stmt"/>
-        <line num="11" count="2" type="stmt"/>
-        <line num="12" count="2" type="stmt"/>
-        <line num="13" count="2" type="stmt"/>
-        <line num="14" count="2" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
-        <line num="22" count="0" type="stmt"/>
+        <line num="7" count="3" type="stmt"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="10" count="3" type="stmt"/>
+        <line num="11" count="3" type="stmt"/>
+        <line num="12" count="3" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="15" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
         <line num="23" count="1" type="stmt"/>
       </file>
     </package>

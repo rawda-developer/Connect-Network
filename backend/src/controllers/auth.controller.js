@@ -1,8 +1,13 @@
 const jsonwebtoken = require("jsonwebtoken");
-// const { expressjwt } = require("express-jwt");
+const { expressjwt } = require("express-jwt");
 const User = require("../models/user.model");
 const { config } = require("../config");
-
+const requireLogin = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'You must be logged in to access this resource' });
+  }
+  next();
+}
 const login = async (req, res) => {
   try {
     const user = await User.findOne({
@@ -41,4 +46,5 @@ const login = async (req, res) => {
     });
   }
 };
-module.exports = { login };
+
+module.exports = { login, requireLogin };
