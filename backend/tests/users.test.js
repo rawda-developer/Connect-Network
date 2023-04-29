@@ -140,11 +140,11 @@ describe("PUT /api/users/:userId", () => {
   test("should not update unauthorized user", async () => {
     const newUser = await createUser();
     const user2 = await createUser2();
-    const header1 = await getUserHeader();
-    const header2 = await getUser2Header();
+
+    const user2header = await getUser2Header();
     const res = await request
       .put(`/api/users/${newUser._id}`)
-      .set("Authorization", `Bearer ${header2}`)
+      .set("Authorization", `Bearer ${user2header}`)
       .set({ connection: "keep-alive" })
       .attach("image", `${__dirname}/image.jpg`)
       .field("name", "Test updated")
