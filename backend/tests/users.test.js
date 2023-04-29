@@ -272,6 +272,7 @@ describe("DELETE /api/users/:userId/followed/by/followerId", () => {
     );
     expect(result.followers).not.toContainEqual(newUser2._id);
   });
+
   test("unauthenticated users can't unfollow another user", async () => {
     const newUser1 = await createUser();
     const newUser2 = await createUser2();
