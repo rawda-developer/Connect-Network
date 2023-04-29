@@ -96,3 +96,24 @@ describe("GET /api/users/:userId", () => {
     expect(res.status).toEqual(401);
   });
 });
+describe("PUT /api/users/:userId", () => {
+  test("should update user by id", async () => {
+    const newUser = await createUser();
+
+    const header = await getUserHeader();
+
+    const res = await request
+      .put(`/api/users/${newUser._id}`)
+      .set("Authorization", `Bearer ${header}`)
+      .set({ connection: "keep-alive" })
+      .attach("image", `${__dirname}/image.jpg`)
+      .field("name", "Test updated")
+      .field("password", "testTest123*&_new")
+      .field("email", "test_updated@test.com");
+
+    expect(res.status).toEqual(200);
+    expect(res.body.name).toEqual("Test updated");
+    expect(res.body.hashedPassword).toBeUndefined();
+    expect(res.body.image).toBeUndefined();
+  });
+});
