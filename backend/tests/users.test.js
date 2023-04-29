@@ -116,4 +116,19 @@ describe("PUT /api/users/:userId", () => {
     expect(res.body.hashedPassword).toBeUndefined();
     expect(res.body.image).toBeUndefined();
   });
+  test("should not update unauthorized user", async () => {
+    const newUser = await createUser();
+    const res = await request
+      .put(`/api/users/${newUser._id}`)
+      .set({ connection: "keep-alive" })
+      .attach("image", `${__dirname}/image.jpg`)
+      .field("name", "Test updated")
+      .field("password", "testTest123*&_new")
+      .field("email", "test_updated@test.com");
+
+    expect(res.status).toEqual(401);
+    expect(res.body.name).toBeUndefined();
+    expect(res.body.hashedPassword).toBeUndefined();
+    expect(res.body.image).toBeUndefined();
+  });
 });
