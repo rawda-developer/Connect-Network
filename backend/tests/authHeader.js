@@ -2,7 +2,7 @@ const User = require("../src/models/user.model");
 const supertest = require("supertest");
 const { app } = require("../src/server");
 const request = supertest(app);
-let user;
+let user, user2;
 const createUser = async () => {
   user = new User({
     name: "Test",
@@ -21,7 +21,7 @@ const getUserHeader = async () => {
   return res.body.token;
 };
 const createUser2 = async () => {
-  let user2 = new User({
+   user2 = new User({
     name: "Test2",
     email: "test2@test.com",
     password: "testTest123*&",
@@ -39,6 +39,7 @@ const getUser2Header = async () => {
 };
 module.exports = {
   user,
+  user2,
   createUser,
   getUserHeader,
   createUser2,
