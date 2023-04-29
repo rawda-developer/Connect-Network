@@ -208,3 +208,31 @@ describe("GET /api/users", () => {
     expect(res.statusCode).toBe(401);
   });
 });
+describe("/api/users/:userId/followed/by/followerId", () => {
+  test("authenticated users can follow another user", async () => {
+    const newUser1 = await createUser();
+    const newUser2 = await createUser2();
+    const user1Jwt = await getUserHeader();
+    const res = await request
+      .post(`/api/users/${newUser2._id}/followed/by/${newUser1._id}`)
+      .set("Authorization", `Bearer ${user1Jwt}`);
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toBeTruthy();
+    const result = await User.findOne({ _id: newUser2._id }).select(
+      "followers"
+    );
+
+    expect(result.followers).toContainEqual(newUser1._id);
+  });
+  test("unauthenticated users can follow another user", async () => {
+    const newUser1 = await createUser();
+    const newUser2 = await createUser2();
+    const user1Jwt = await getUserHeader();
+    const res = await request.post(
+      `/api/users/${newUser2._id}/followed/by/${newUser1._id}`
+    );
+
+    expect(res.statusCode).toEqual(401);
+    expect(res.body.error).toBeTruthy();
+  });
+});
