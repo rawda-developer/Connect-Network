@@ -169,4 +169,15 @@ describe("DELETE /api/users/:userId", () => {
     const deletedUser = await User.findOne({ _id: newUser._id });
     expect(deletedUser).toBeNull();
   });
+  test("unauthorized user can delete her own account", async () => {
+    const newUser = await createUser();
+    await createUser2();
+    const anotherUserJwt = await getUser2Header();
+    const res = await request
+      .delete(`/api/users/${newUser._id}`)
+      .set("Authorization", `Bearer ${anotherUserJwt}`);
+      expect(res.statusCode).toEqual(403);
+    const deletedUser = await User.findById(newUser._id)
+    expect(deletedUser).toBeDefined()
+  });
 });
