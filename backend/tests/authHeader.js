@@ -20,4 +20,27 @@ const getUserHeader = async () => {
 
   return res.body.token;
 };
-module.exports = { user, createUser, getUserHeader };
+const createUser2 = async () => {
+  let user2 = new User({
+    name: "Test2",
+    email: "test2@test.com",
+    password: "testTest123*&",
+  });
+  user2 = await user2.save();
+  return user2;
+};
+const getUser2Header = async () => {
+  const res = await request.post("/api/auth/login").send({
+    email: "test2@test.com",
+    password: "testTest123*&",
+  });
+
+  return res.body.token;
+};
+module.exports = {
+  user,
+  createUser,
+  getUserHeader,
+  createUser2,
+  getUser2Header,
+};

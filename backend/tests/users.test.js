@@ -4,7 +4,13 @@ const mongoose = require("mongoose");
 
 const User = require("../src/models/user.model");
 const { connect } = require("../src/utils/dbConnection");
-const { user, createUser, getUserHeader } = require("./authHeader");
+const {
+  user,
+  createUser,
+  getUserHeader,
+  createUser2,
+  getUser2Header,
+} = require("./authHeader");
 const request = supertest(app);
 beforeAll(async () => {
   await connect();
@@ -116,7 +122,7 @@ describe("PUT /api/users/:userId", () => {
     expect(res.body.hashedPassword).toBeUndefined();
     expect(res.body.image).toBeUndefined();
   });
-  test("should not update unauthorized user", async () => {
+  test("should not update unauthenticated user", async () => {
     const newUser = await createUser();
     const res = await request
       .put(`/api/users/${newUser._id}`)
@@ -127,6 +133,24 @@ describe("PUT /api/users/:userId", () => {
       .field("email", "test_updated@test.com");
 
     expect(res.status).toEqual(401);
+    expect(res.body.name).toBeUndefined();
+    expect(res.body.hashedPassword).toBeUndefined();
+    expect(res.body.image).toBeUndefined();
+  });
+  test("should not update unauthorized user", async () => {
+    const newUser = await createUser();
+    const user2 = await createUser2();
+    const header1 = await getUserHeader();
+    const header2 = await getUser2Header();
+    const res = await request
+      .put(`/api/users/${newUser._id}`)
+      .set("Authorization", `Bearer ${header2}`)
+      .set({ connection: "keep-alive" })
+      .attach("image", `${__dirname}/image.jpg`)
+      .field("name", "Test updated")
+      .field("password", "testTest123*&_new")
+      .field("email", "test_updated2@test.com");
+    expect(res.status).toEqual(403);
     expect(res.body.name).toBeUndefined();
     expect(res.body.hashedPassword).toBeUndefined();
     expect(res.body.image).toBeUndefined();
