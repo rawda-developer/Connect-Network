@@ -189,3 +189,16 @@ describe("DELETE /api/users/:userId", () => {
     expect(deletedUser).toBeDefined();
   });
 });
+describe("GET /api/users", () => {
+  test("a logged-in user can get a list of user profiles in the system", async () => {
+    const newUser1 = await createUser();
+    const newUser2 = await createUser2();
+    const user1Jwt = await getUserHeader();
+
+    const res = await request
+      .get("/api/users")
+      .set("Authorization", `Bearer ${user1Jwt}`);
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveLength(2);
+  });
+});
