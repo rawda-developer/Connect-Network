@@ -163,7 +163,10 @@ describe("DELETE /api/users/:userId", () => {
     const res = await request
       .delete(`/api/users/${newUser._id}`)
       .set("Authorization", `Bearer ${jwt}`);
-    expect(res.statusCode).toEqual(200)
-    expect(res.body.message).toEqual("User deleted successfully")
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toEqual("User deleted successfully");
+    const deletedUser = await User.findOne({ _id: newUser._id });
+    expect(deletedUser).toBeNull();
   });
 });
