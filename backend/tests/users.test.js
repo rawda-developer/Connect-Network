@@ -223,10 +223,58 @@ describe("/api/users/:userId/followed/by/followerId", () => {
     );
     expect(result.followers).toContainEqual(newUser1._id);
   });
-  test("unauthenticated users can follow another user", async () => {
+  test("unauthenticated users can't follow another user", async () => {
     const newUser1 = await createUser();
     const newUser2 = await createUser2();
     const user1Jwt = await getUserHeader();
+    const res = await request.post(
+      `/api/users/${newUser2._id}/followed/by/${newUser1._id}`
+    );
+
+    expect(res.statusCode).toEqual(401);
+    expect(res.body.error).toBeTruthy();
+  });
+});
+
+describe("DELETE /api/users/:userId/followed/by/followerId", () => {
+  test("authenticated users can unfollow another user", async () => {
+    let newUser1 = await createUser();
+    let newUser2 = await createUser2();
+    const user2Jwt = await getUser2Header();
+    newUser1 = await User.findByIdAndUpdate(
+      newUser1._id,
+      {
+        $push: {
+          followers: newUser2._id,
+        },
+      },
+      { new: true }
+    );
+    newUser2 = await User.findByIdAndUpdate(
+      newUser2._id,
+      {
+        $push: {
+          following: newUser1._id,
+        },
+      },
+      { new: true }
+    );
+    console.log(newUser1);
+    console.log(newUser2);
+    const res = await request
+      .delete(`/api/users/${newUser1._id}/followed/by/${newUser2._id}`)
+      .set("Authorization", `Bearer ${user2Jwt}`);
+    console.log(res.body);
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toBeTruthy();
+    const result = await User.findOne({ _id: newUser1._id }).select(
+      "followers"
+    );
+    expect(result.followers).not.toContainEqual(newUser2._id);
+  });
+  test("unauthenticated users can't unfollow another user", async () => {
+    const newUser1 = await createUser();
+    const newUser2 = await createUser2();
     const res = await request.post(
       `/api/users/${newUser2._id}/followed/by/${newUser1._id}`
     );
