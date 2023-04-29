@@ -201,4 +201,10 @@ describe("GET /api/users", () => {
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveLength(2);
   });
+  test("a non logged-in user can't get a list of user profiles in the system", async () => {
+    await createUser();
+    await createUser2();
+    const res = await request.get("/api/users");
+    expect(res.statusCode).toBe(401);
+  });
 });
