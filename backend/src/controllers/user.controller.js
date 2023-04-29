@@ -99,4 +99,20 @@ const remove = async (req, res) => {
     return res.status(400).json({ error: "Sorry something wrong happened" });
   }
 };
-module.exports = { passwordComplexity, create, read, update, remove, userById };
+const readAll = async (req, res) => {
+  try {
+    const users = await User.find({}).select("_id name updated");
+    return res.json(users);
+  } catch (err) {
+    return res.status(400).json({ error: "Sorry can't retrieve users" });
+  }
+};
+module.exports = {
+  passwordComplexity,
+  create,
+  read,
+  readAll,
+  update,
+  remove,
+  userById,
+};
