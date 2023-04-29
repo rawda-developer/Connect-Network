@@ -30,15 +30,14 @@ describe("GET /users/:userId/posts", () => {
     expect(res.status).toEqual(200);
     expect(res.body).toHaveLength(2);
   });
-  test("a logged in user can get a list of a posts from any users in the system", async () => {
+  test("a non-logged in user can't get a list of a posts from any users in the system", async () => {
     let user = await createUser();
     let jwt = await getUserHeader();
     await createPost1(user);
     await createPost2(user);
-    const res = await request
-      .get(`/api/users/${user._id}/posts`)
-     
+    const res = await request.get(`/api/users/${user._id}/posts`);
+
     expect(res.status).toEqual(401);
-    expect(res.body.error).toBeTruthy()
+    expect(res.body.error).toBeTruthy();
   });
 });
