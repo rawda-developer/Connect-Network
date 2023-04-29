@@ -3,21 +3,19 @@ const { expressjwt } = require("express-jwt");
 const User = require("../models/user.model");
 const { config } = require("../config");
 const jwt = require("jsonwebtoken");
-
-const requireLogin = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) {
-    return res
-      .status(401)
-      .json({ error: "You must be logged in to access this resource" });
+const requireLogin = expressjwt({
+  secret: config.JWT_SECRET,
+  userProperty: "auth",
+  algorithms: ["HS256"],
+});
+const hasAuthorization = (req, res, next) => {
+  const authorized = req.user && req.auth && req.user._id == req.auth._id;
+  if (!authorized) {
+    return res.status("403").json({
+      error: "User is not authorized",
+    });
   }
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.token = decoded;
-    next();
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
-  }
+  next();
 };
 const login = async (req, res) => {
   try {
@@ -58,4 +56,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { login, requireLogin };
+module.exports = { login, requireLogin, hasAuthorization };

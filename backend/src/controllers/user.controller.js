@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
-
+const extend = require("lodash/extend");
+const formidable = require("formidable");
 const passwordComplexity = (req, res, next) => {
   const password = req.body.password;
   const passwordRegex =
@@ -60,4 +61,34 @@ const read = async (req, res) => {
 
   res.json(user);
 };
-module.exports = { passwordComplexity, create, read, userById };
+const update = async (req, res) => {
+  let form = new formidable.IncomingForm();
+  form.keepExtensions = true;
+  form.parse(req, async (err, fields, files) => {
+    // console.log(fields);
+    // console.log(files);
+    if (err) {
+      return res.status(400).json({
+        error: "Photo could not be uploaded",
+      });
+    }
+    let user = req.user;
+    user = extend(user, fields);
+    user.updated = Date.now();
+    if (files.photo) {
+      user.photo.data = fs.readFileSync(files.photo.filepath);
+      user.photo.contentType = files.photo.type;
+    }
+    try {
+      await user.save();
+      user.hashedPassword = undefined;
+      user.salt = undefined;
+      res.json(user);
+    } catch (err) {
+      return res.status(400).json({
+        error: "Sorry there's something wrong",
+      });
+    }
+  });
+};
+module.exports = { passwordComplexity, create, read, update, userById };
