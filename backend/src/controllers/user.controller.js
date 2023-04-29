@@ -116,9 +116,8 @@ const follow = async (req, res) => {
     }
     const followers = await User.findById(req.user._id)
       .select("followers")
-      .populate("followers", "_id name")
       .exec();
-    console.log(followers);
+    console.log("FOLLOWERS", followers);
     const following = followers.followers.includes(req.params.followerId);
 
     if (following) {
@@ -153,6 +152,51 @@ const follow = async (req, res) => {
     return res.status(400).json({ error: "Sorry something wrong happened" });
   }
 };
+const unfollow = async (req, res) => {
+  try {
+    const followerUser = await User.findOne({ _id: req.params.followerId });
+    console.log("follower", followerUser);
+    if (!followerUser) {
+      return res.status(404).json({ error: "Sorry user is not recognized" });
+    }
+    const followers = await User.findById(req.user._id)
+      .select("followers")
+      .exec();
+
+    const following = followers.followers.includes(req.params.followerId);
+
+    if (!following) {
+      return res
+        .status(400)
+        .json({ error: `You are not following ${req.user.name}` });
+    }
+    await User.findOneAndUpdate(
+      { _id: req.user._id },
+      {
+        $pull: {
+          followers: req.params.followerId,
+        },
+      },
+      { new: true }
+    );
+    await User.findOneAndUpdate(
+      {
+        _id: req.params.followerId,
+      },
+      {
+        $pull: {
+          following: req.user._id,
+        },
+      },
+      { new: true }
+    );
+    return res.json({
+      message: `you successfully unfollowed ${req.user.name}`,
+    });
+  } catch (err) {
+    return res.status(400).json({ error: "Sorry something wrong happened" });
+  }
+};
 module.exports = {
   passwordComplexity,
   create,
@@ -162,4 +206,5 @@ module.exports = {
   remove,
   userById,
   follow,
+  unfollow,
 };

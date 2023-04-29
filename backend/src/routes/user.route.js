@@ -28,6 +28,6 @@ userRouter
 userRouter
   .route("/:userId/followed/by/:followerId")
   .post(requireLogin, follow)
-  // .delete(requireLogin, unfollow);
+  .delete(requireLogin, unfollow);
 userRouter.param("userId", userById);
 module.exports = userRouter;
