@@ -26,6 +26,7 @@ describe("POST /api/users", () => {
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Successfully signed up!");
   });
+
   test("should not register a user with an existing email", async () => {
     const user = new User({
       name: "Test",
@@ -70,5 +71,21 @@ describe("POST /api/auth/login", () => {
     });
     expect(res.status).toBe(401);
     expect(res.body.error).toBe("Email and password don't match.");
+  });
+});
+describe("GET /api/users/:userId", () => {
+  test("should get user by id", async () => {
+    const newUser = await createUser();
+
+    const header = await getUserHeader();
+
+    const res = await request
+      .get(`/api/users/${newUser._id}`)
+      .set("Authorization", `Bearer ${header}`);
+
+    expect(res.status).toEqual(200);
+    expect(res.body.name).toEqual("Test");
+
+    expect(res.body.hashedPassword).toBeUndefined()
   });
 });
