@@ -8,7 +8,7 @@ const {
 } = require("../controllers/user.controller");
 
 const userRouter = express.Router();
-userRouter.route("/:userId").get(requireLogin, read);
 userRouter.route("/").post(passwordComplexity, create);
+userRouter.route("/:userId").get(requireLogin, read);
 userRouter.param("userId", userById);
 module.exports = userRouter;

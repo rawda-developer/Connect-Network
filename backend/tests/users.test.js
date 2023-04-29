@@ -86,6 +86,13 @@ describe("GET /api/users/:userId", () => {
     expect(res.status).toEqual(200);
     expect(res.body.name).toEqual("Test");
 
-    expect(res.body.hashedPassword).toBeUndefined()
+    expect(res.body.hashedPassword).toBeUndefined();
+  });
+  test("shouldn't get user by id not logged in", async () => {
+    const newUser = await createUser();
+
+    const res = await request.get(`/api/users/${newUser._id}`);
+
+    expect(res.status).toEqual(401);
   });
 });
