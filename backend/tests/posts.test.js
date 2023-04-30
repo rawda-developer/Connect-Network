@@ -41,3 +41,18 @@ describe("GET /users/:userId/posts", () => {
     expect(res.body.error).toBeTruthy();
   });
 });
+describe("GET /users/:userId/posts/:postId", () => {
+  test("a logged in user can get a a posts by id", async () => {
+    let user = await createUser();
+    let jwt = await getUserHeader();
+    const post1 = await createPost1(user);
+    await createPost2(user);
+
+    const res = await request
+      .get(`/api/users/${user._id}/posts/${post1._id}`)
+      .set("Authorization", `Bearer ${jwt}`);
+      
+      expect(res.status).toEqual(200);
+      expect(res.body.text).toEqual(post1.text);
+  });
+});

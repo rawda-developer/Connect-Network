@@ -15,6 +15,18 @@ const postSchema = new Schema(
     },
     owner: { type: Schema.ObjectId, ref: "User" },
     likes: [{ type: Schema.ObjectId, ref: "User" }],
+    comments: [
+      {
+        text: {
+          type: String,
+          required: "Can't add an empty comment",
+        },
+        owner: {
+          type: Schema.ObjectId,
+          ref: "User",
+        },
+      },
+    ],
     updated: Date,
   },
 
