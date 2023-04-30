@@ -12,15 +12,16 @@ const read = async (req, res) => {
   return res.json(req.post);
 };
 const postById = async (req, res, next, postId) => {
-  const post = await Post.findById(postId)
+  const post = await Post.findOne({ _id: postId, owner: req.user })
     .populate("owner", "_id name")
     .populate("comments", "_id text")
-    .populate("likes", "_id name");
-  post.image = undefined;
-  req.post = post;
-  console.log(post);
+    .populate("likes", "_id name")
+    .exec();
+  console.log("POSTBYID", post);
   if (!post)
     return res.status(404).json({ error: "Sorry we can't find that post" });
+  post.image = undefined;
+  req.post = post;
   next();
 };
 module.exports = { readAll, postById, read };

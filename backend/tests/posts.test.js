@@ -6,7 +6,7 @@ const User = require("../src/models/user.model");
 
 const Post = require("../src/models/post.model");
 const { connect } = require("../src/utils/dbConnection");
-const { getUserHeader, createUser } = require("./authHeader");
+const { getUserHeader, createUser, createUser2 } = require("./authHeader");
 const request = supertest(app);
 beforeAll(async () => {
   await connect();
@@ -63,6 +63,20 @@ describe("GET /users/:userId/posts/:postId", () => {
     const res = await request.get(`/api/users/${user._id}/posts/${post1._id}`);
 
     expect(res.status).toEqual(401);
+    expect(res.body.error).toBeTruthy();
+  });
+  test("an authenticated user can't get a posts that doesn't exist", async () => {
+    let user = await createUser2();
+    let user2 = await createUser();
+    await createPost1(user);
+    const anotherUserPost = await createPost2(user2);
+    let jwt = await getUserHeader();
+
+    const res = await request
+      .get(`/api/users/${user._id}/posts/${anotherUserPost._id}`)
+      .set("Authorization", `Bearer ${jwt}`);
+
+    expect(res.status).toEqual(404);
     expect(res.body.error).toBeTruthy();
   });
 });
