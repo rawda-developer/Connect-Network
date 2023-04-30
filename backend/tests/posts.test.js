@@ -94,4 +94,29 @@ describe("POST /users/:userId/posts", () => {
     expect(res.status).toEqual(200);
     expect(res.body.owner._id).toEqual(user._id.toString());
   });
+  test("an unauthenticated user can't create a new post", async () => {
+    let user = await createUser();
+
+    const res = await request.post(`/api/users/${user._id}/posts`).send({
+      text: "new post",
+    });
+
+    expect(res.status).toEqual(401);
+    expect(res.body.error).toBeTruthy();
+  });
+  test("an unauthorized user can't create a new post", async () => {
+    let user = await createUser();
+    let unauthenticatedUser = await createUser2();
+    let jwt = await getUserHeader();
+
+    const res = await request
+      .post(`/api/users/${unauthenticatedUser._id}/posts`)
+      .set("Authorization", `Bearer ${jwt}`)
+      .send({
+        text: "new post",
+      });
+
+    expect(res.status).toEqual(403);
+    expect(res.body.error).toBeTruthy();
+  });
 });
