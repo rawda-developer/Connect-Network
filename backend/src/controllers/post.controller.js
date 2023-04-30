@@ -1,7 +1,7 @@
 const Post = require("../models/post.model");
 const extend = require("lodash/extend");
 const formidable = require("formidable");
-const fs = require("fs")
+const fs = require("fs");
 const readAll = async (req, res) => {
   try {
     const posts = await Post.find({ owner: req.user._id });
@@ -68,6 +68,8 @@ const edit = async (req, res) => {
     }
     try {
       await post.save();
+
+      post.image = undefined;
       return res.json(post);
     } catch (err) {
       return res.status(400).json({

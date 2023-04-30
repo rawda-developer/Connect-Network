@@ -8,6 +8,7 @@ const {
   read,
   create,
   postById,
+  edit,
 } = require("../controllers/post.controller");
 const { userById } = require("../controllers/user.controller");
 
@@ -15,10 +16,11 @@ const postRouter = express.Router();
 postRouter
   .route("/users/:userId/posts")
   .get(requireLogin, readAll)
-  .post(requireLogin, hasAuthorization, create)
-  // .put(requireLogin, hasAuthorization, edit);
-postRouter.route("/users/:userId/posts/:postId").get(requireLogin, read);
-
+  .post(requireLogin, hasAuthorization, create);
+postRouter
+  .route("/users/:userId/posts/:postId")
+  .get(requireLogin, read)
+  .put(requireLogin, hasAuthorization, edit);
 postRouter.param("userId", userById);
 postRouter.param("postId", postById);
 module.exports = postRouter;

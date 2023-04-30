@@ -98,3 +98,21 @@ describe("POST /users/:userId/posts", () => {
     expect(res.body.image).toBeUndefined();
   });
 });
+describe("PUT /users/:userId/posts", () => {
+  test("authorized users can create a post", async () => {
+    const newUser = await createUser();
+    const newPost = await createPost1(newUser)
+    const header = await getUserHeader();
+    
+    const res = await request
+      .put(`/api/users/${newUser._id}/posts/${newPost._id}`)
+      .set("Authorization", `Bearer ${header}`)
+      .set({ connection: "keep-alive" })
+      .attach("image", `${__dirname}/image.jpg`)
+      .field("text", "Hello world");
+
+    expect(res.status).toEqual(200);
+    expect(res.body.text).toEqual("Hello world");
+    expect(res.body.image).toBeUndefined();
+  });
+});
