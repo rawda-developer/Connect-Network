@@ -144,4 +144,27 @@ describe("POST /api/users/:userId/posts/:postId/comment", () => {
     expect(res.body.comments).toHaveLength(1);
     expect(res.body.comments[0].text).toEqual("Hey everyone");
   });
+  test("unauthenticated users can't create comments on posts", async () => {
+    const newUser = await createUser();
+    const newPost = await createPost1(newUser);
+
+    const res = await request
+      .post(`/api/users/${newUser._id}/posts/${newPost._id}/comments`)
+      .send({ text: "Hey everyone" });
+    expect(res.status).toEqual(401);
+    expect(res.body.error).toBeTruthy();
+  });
+  test("authenticated users can't create comments on non-existing posts", async () => {
+    const newUser = await createUser();
+    const newUser2 = await createUser2();
+    const newPost = await createPost1(newUser);
+    const header = await getUserHeader();
+
+    const res = await request
+      .post(`/api/users/${newUser2._id}/posts/${newPost._id}/comments`)
+      .set("Authorization", `Bearer ${header}`)
+      .send({ text: "Hey everyone" });
+    expect(res.status).toEqual(404);
+    expect(res.body.error).toBeTruthy();
+  });
 });
