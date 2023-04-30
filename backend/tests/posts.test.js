@@ -3,7 +3,7 @@ const supertest = require("supertest");
 const { app } = require("../src/server");
 const { createPost1, createPost2 } = require("./createPosts");
 const User = require("../src/models/user.model");
-
+const { Schema } = require("mongoose");
 const Post = require("../src/models/post.model");
 const { connect } = require("../src/utils/dbConnection");
 const { getUserHeader, createUser, createUser2 } = require("./authHeader");
@@ -78,5 +78,20 @@ describe("GET /users/:userId/posts/:postId", () => {
 
     expect(res.status).toEqual(404);
     expect(res.body.error).toBeTruthy();
+  });
+});
+describe("POST /users/:userId/posts", () => {
+  test("an authorized user can create a new post", async () => {
+    let user = await createUser();
+    let jwt = await getUserHeader();
+    const res = await request
+      .post(`/api/users/${user._id}/posts`)
+      .set("Authorization", `Bearer ${jwt}`)
+      .send({
+        text: "new post",
+      });
+
+    expect(res.status).toEqual(200);
+    expect(res.body.owner._id).toEqual(user._id.toString());
   });
 });

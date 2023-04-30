@@ -24,4 +24,18 @@ const postById = async (req, res, next, postId) => {
   req.post = post;
   next();
 };
-module.exports = { readAll, postById, read };
+const create = async (req, res) => {
+  try {
+    const newPost = new Post(req.body);
+    newPost.owner = req.user;
+    await newPost.save();
+    const result = await Post.findOne({ _id: newPost._id })
+      .populate("owner", "_id name")
+      .exec();
+
+    return res.json(result);
+  } catch (err) {
+    return res.status(400).json({ error: "Sorry can't create post" });
+  }
+};
+module.exports = { readAll, postById, read, create };

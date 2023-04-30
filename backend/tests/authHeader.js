@@ -9,8 +9,10 @@ const createUser = async () => {
     email: "test1@test.com",
     password: "testTest123*&",
   });
-  user = await user.save();
-  return user;
+  await user.save();
+  const result = await User.findById(user._id);
+
+  return result;
 };
 const getUserHeader = async () => {
   const res = await request.post("/api/auth/login").send({
@@ -21,7 +23,7 @@ const getUserHeader = async () => {
   return res.body.token;
 };
 const createUser2 = async () => {
-   user2 = new User({
+  user2 = new User({
     name: "Test2",
     email: "test2@test.com",
     password: "testTest123*&",
