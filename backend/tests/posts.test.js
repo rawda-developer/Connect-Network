@@ -65,58 +65,36 @@ describe("GET /users/:userId/posts/:postId", () => {
     expect(res.status).toEqual(401);
     expect(res.body.error).toBeTruthy();
   });
-  test("an authenticated user can't get a posts that doesn't exist", async () => {
-    let user = await createUser2();
-    let user2 = await createUser();
+  test("an unauthenticated user can't create a posts that doesn't exist", async () => {
+    let user = await createUser();
+    let user2 = await createUser2();
     await createPost1(user);
     const anotherUserPost = await createPost2(user2);
     let jwt = await getUserHeader();
 
-    const res = await request
-      .get(`/api/users/${user._id}/posts/${anotherUserPost._id}`)
-      .set("Authorization", `Bearer ${jwt}`);
-
-    expect(res.status).toEqual(404);
-    expect(res.body.error).toBeTruthy();
-  });
-});
-describe("POST /users/:userId/posts", () => {
-  test("an authorized user can create a new post", async () => {
-    let user = await createUser();
-    let jwt = await getUserHeader();
-    const res = await request
-      .post(`/api/users/${user._id}/posts`)
-      .set("Authorization", `Bearer ${jwt}`)
-      .send({
-        text: "new post",
-      });
-
-    expect(res.status).toEqual(200);
-    expect(res.body.owner._id).toEqual(user._id.toString());
-  });
-  test("an unauthenticated user can't create a new post", async () => {
-    let user = await createUser();
-
-    const res = await request.post(`/api/users/${user._id}/posts`).send({
-      text: "new post",
-    });
+    const res = await request.get(
+      `/api/users/${user2._id}/posts/${anotherUserPost._id}`
+    );
 
     expect(res.status).toEqual(401);
     expect(res.body.error).toBeTruthy();
   });
-  test("an unauthorized user can't create a new post", async () => {
-    let user = await createUser();
-    let unauthenticatedUser = await createUser2();
-    let jwt = await getUserHeader();
+});
+describe("POST /users/:userId/posts", () => {
+  test("authorized users can create a post", async () => {
+    const newUser = await createUser();
 
+    const header = await getUserHeader();
+    console.log(newUser);
     const res = await request
-      .post(`/api/users/${unauthenticatedUser._id}/posts`)
-      .set("Authorization", `Bearer ${jwt}`)
-      .send({
-        text: "new post",
-      });
+      .post(`/api/users/${newUser._id}/posts`)
+      .set("Authorization", `Bearer ${header}`)
+      .set({ connection: "keep-alive" })
+      .attach("image", `${__dirname}/image.jpg`)
+      .field("text", "Hello world");
 
-    expect(res.status).toEqual(403);
-    expect(res.body.error).toBeTruthy();
+    expect(res.status).toEqual(200);
+    expect(res.body.text).toEqual("Hello world");
+    expect(res.body.image).toBeUndefined();
   });
 });

@@ -11,7 +11,7 @@ const createUser = async () => {
   });
   await user.save();
   const result = await User.findById(user._id);
-
+  console.log(result)
   return result;
 };
 const getUserHeader = async () => {
