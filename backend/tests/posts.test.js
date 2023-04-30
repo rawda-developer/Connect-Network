@@ -101,9 +101,9 @@ describe("POST /users/:userId/posts", () => {
 describe("PUT /users/:userId/posts", () => {
   test("authorized users can create a post", async () => {
     const newUser = await createUser();
-    const newPost = await createPost1(newUser)
+    const newPost = await createPost1(newUser);
     const header = await getUserHeader();
-    
+
     const res = await request
       .put(`/api/users/${newUser._id}/posts/${newPost._id}`)
       .set("Authorization", `Bearer ${header}`)
@@ -114,5 +114,17 @@ describe("PUT /users/:userId/posts", () => {
     expect(res.status).toEqual(200);
     expect(res.body.text).toEqual("Hello world");
     expect(res.body.image).toBeUndefined();
+  });
+});
+describe("DELETE /api/users/:userId/posts/:postId", () => {
+  test("authorized user can delete their posts", async () => {
+    const newUser = await createUser();
+    const newPost = await createPost1(newUser);
+    const header = await getUserHeader();
+
+    const res = await request
+      .delete(`/api/users/${newUser._id}/posts/${newPost._id}`)
+      .set("Authorization", `Bearer ${header}`);
+    expect(res.status).toEqual(200);
   });
 });

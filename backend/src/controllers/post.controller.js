@@ -78,4 +78,13 @@ const edit = async (req, res) => {
     }
   });
 };
-module.exports = { readAll, postById, read, create, edit };
+const remove = async (req, res) => {
+  try {
+    const deletedPost = req.post;
+    await Post.findByIdAndDelete(deletedPost._id);
+    return res.json(deletedPost);
+  } catch (err) {
+    return res.status(400).json({ error: "Sorry something went wrong" });
+  }
+};
+module.exports = { readAll, postById, read, create, edit, remove };

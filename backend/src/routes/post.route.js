@@ -9,6 +9,7 @@ const {
   create,
   postById,
   edit,
+  remove
 } = require("../controllers/post.controller");
 const { userById } = require("../controllers/user.controller");
 
@@ -20,7 +21,8 @@ postRouter
 postRouter
   .route("/users/:userId/posts/:postId")
   .get(requireLogin, read)
-  .put(requireLogin, hasAuthorization, edit);
+  .put(requireLogin, hasAuthorization, edit)
+  .delete(requireLogin, hasAuthorization, remove)
 postRouter.param("userId", userById);
 postRouter.param("postId", postById);
 module.exports = postRouter;
