@@ -126,5 +126,6 @@ describe("DELETE /api/users/:userId/posts/:postId", () => {
       .delete(`/api/users/${newUser._id}/posts/${newPost._id}`)
       .set("Authorization", `Bearer ${header}`);
     expect(res.status).toEqual(200);
+    expect(res.body._id).toEqual(newPost._id.toString());
   });
 });
