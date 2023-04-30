@@ -129,3 +129,19 @@ describe("DELETE /api/users/:userId/posts/:postId", () => {
     expect(res.body._id).toEqual(newPost._id.toString());
   });
 });
+describe("POST /api/users/:userId/posts/:postId/comment", () => {
+  test("authenticated users can create comments on posts", async () => {
+    const newUser = await createUser();
+    const newPost = await createPost1(newUser);
+    const header = await getUserHeader();
+
+    const res = await request
+      .post(`/api/users/${newUser._id}/posts/${newPost._id}/comments`)
+      .set("Authorization", `Bearer ${header}`)
+      .send({ text: "Hey everyone" });
+    expect(res.status).toEqual(200);
+    console.log(res.body.comments);
+    expect(res.body.comments).toHaveLength(1);
+    expect(res.body.comments[0].text).toEqual("Hey everyone");
+  });
+});

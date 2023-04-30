@@ -9,11 +9,15 @@ const {
   create,
   postById,
   edit,
-  remove
+  remove,
+  addComment,
 } = require("../controllers/post.controller");
 const { userById } = require("../controllers/user.controller");
 
 const postRouter = express.Router();
+postRouter
+  .route("/users/:userId/posts/:postId/comments")
+  .post(requireLogin, addComment);
 postRouter
   .route("/users/:userId/posts")
   .get(requireLogin, readAll)
@@ -22,7 +26,7 @@ postRouter
   .route("/users/:userId/posts/:postId")
   .get(requireLogin, read)
   .put(requireLogin, hasAuthorization, edit)
-  .delete(requireLogin, hasAuthorization, remove)
+  .delete(requireLogin, hasAuthorization, remove);
 postRouter.param("userId", userById);
 postRouter.param("postId", postById);
 module.exports = postRouter;

@@ -87,4 +87,22 @@ const remove = async (req, res) => {
     return res.status(400).json({ error: "Sorry something went wrong" });
   }
 };
-module.exports = { readAll, postById, read, create, edit, remove };
+const addComment = async (req, res) => {
+  const comment = req.body;
+  try {
+    const result = await Post.findByIdAndUpdate(
+      req.post._id,
+      {
+        $push: { comments: comment },
+      },
+      { new: true }
+    )
+      .select("comments")
+      .populate("owner", "_id name")
+      .exec();
+    return res.json(result);
+  } catch (err) {
+    return res.status(400).json({ error: "Sorry we can't create comment" });
+  }
+};
+module.exports = { readAll, postById, read, create, edit, remove, addComment };
