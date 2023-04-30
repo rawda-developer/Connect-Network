@@ -51,8 +51,18 @@ describe("GET /users/:userId/posts/:postId", () => {
     const res = await request
       .get(`/api/users/${user._id}/posts/${post1._id}`)
       .set("Authorization", `Bearer ${jwt}`);
-      
-      expect(res.status).toEqual(200);
-      expect(res.body.text).toEqual(post1.text);
+
+    expect(res.status).toEqual(200);
+    expect(res.body.text).toEqual(post1.text);
+  });
+  test("an unauthenticated user can't get a a posts by id", async () => {
+    let user = await createUser();
+    const post1 = await createPost1(user);
+    await createPost2(user);
+
+    const res = await request.get(`/api/users/${user._id}/posts/${post1._id}`);
+
+    expect(res.status).toEqual(401);
+    expect(res.body.error).toBeTruthy();
   });
 });
