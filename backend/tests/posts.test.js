@@ -210,4 +210,45 @@ describe("PUT /api/users/:userId/posts/:postId/comment/:commentId", () => {
     expect(res.status).toEqual(200);
     expect(res.body.text).toEqual("Hey everyone!!");
   });
+  test("authenticated users can update their comments on a post", async () => {
+    let newUser = await createUser();
+    let newUser2 = await createUser2();
+    const newPost = await createPost1(newUser);
+    const jwt = await getUserHeader();
+    let newComment = new Comment({
+      text: "hello",
+      owner: newUser2,
+      post: newPost,
+    });
+    newComment = await newComment.save();
+
+    await Post.findByIdAndUpdate(newPost._id, {
+      $push: {
+        comments: newComment,
+      },
+      $set: {
+        owner: newUser2,
+      },
+    })
+      .populate("owner", "_id name")
+      .exec();
+    newUser = await User.findOneAndUpdate(
+      { _id: newUser._id },
+      {
+        $push: {
+          posts: newPost,
+        },
+      }
+    ).populate("posts.owner", "_id text");
+
+    const res = await request
+      .put(
+        `/api/users/${newUser2._id}/posts/${newPost._id}/comments/${newComment._id}`
+      )
+      .set("Authorization", `Bearer ${jwt}`)
+      .send({ text: "Hey everyone!!" });
+    expect(res.status).toEqual(403);
+    // console.log("UNAUTHRIZED", res.body);
+    expect(res.body.error).toBeTruthy();
+  });
 });
