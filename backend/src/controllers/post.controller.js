@@ -111,7 +111,7 @@ const addComment = async (req, res) => {
     return res.status(400).json({ error: "Sorry we can't create comment" });
   }
 };
-const isCommmentOwner = async (req, res, next) => {
+const isCommentOwner = async (req, res, next) => {
   console.log("COMMENT", req.comment);
   console.log("AUTH", req.auth);
   console.log("user", req.user);
@@ -126,7 +126,9 @@ const isCommmentOwner = async (req, res, next) => {
 };
 const updateComment = async (req, res) => {
   try {
-    const result = await Comment.findByIdAndUpdate(req.comment._id, req.body, {new: true});
+    const result = await Comment.findByIdAndUpdate(req.comment._id, req.body, {
+      new: true,
+    });
 
     return res.status(200).json(result);
   } catch (err) {
@@ -152,6 +154,30 @@ const commentById = async (req, res, next, commentId) => {
     return res.status(400).json({ error: "Sorry something wrong happened" });
   }
 };
+const readComment = async (req, res) => {
+  return res.json(req.comment);
+};
+const deleteComment = async (req, res) => {
+  try {
+    const deletedComment = await Comment.findOne({
+      _id: req.params.commentId,
+    });
+
+    const result1 = await Post.findByIdAndUpdate(
+      req.post._id,
+      {
+        $pull: { comments: deletedComment._id },
+      },
+      { new: true }
+    );
+    console.log("result1", result1);
+    await Comment.findByIdAndDelete(deletedComment._id);
+
+    return res.json(deletedComment);
+  } catch (err) {
+    return res.status(400).json({ error: "Sorry something gone wrong" });
+  }
+};
 module.exports = {
   readAll,
   postById,
@@ -162,5 +188,7 @@ module.exports = {
   remove,
   addComment,
   updateComment,
-  isCommmentOwner,
+  isCommentOwner,
+  readComment,
+  deleteComment,
 };

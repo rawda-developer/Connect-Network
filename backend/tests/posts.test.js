@@ -4,8 +4,8 @@ const { app } = require("../src/server");
 const { createPost1, createPost2 } = require("./createPosts");
 const User = require("../src/models/user.model");
 const Comment = require("../src/models/comment.model");
-const { Schema } = require("mongoose");
 const Post = require("../src/models/post.model");
+const { Schema } = require("mongoose");
 const { connect } = require("../src/utils/dbConnection");
 const { getUserHeader, createUser, createUser2 } = require("./authHeader");
 const request = supertest(app);
@@ -249,6 +249,84 @@ describe("PUT /api/users/:userId/posts/:postId/comment/:commentId", () => {
       .send({ text: "Hey everyone!!" });
     expect(res.status).toEqual(403);
     // console.log("UNAUTHRIZED", res.body);
+    expect(res.body.error).toBeTruthy();
+  });
+});
+describe("GET /api/users/:userId/posts/:postId/comment/:commentId", () => {
+  test("authenticated users can view comments on a post", async () => {
+    const newUser = await createUser();
+    const post1 = await createPost1(newUser);
+    const jwt = await getUserHeader();
+    let comment = new Comment({ text: "Text 1", owner: newUser });
+    comment = await comment.save();
+    const res = await request
+      .get(
+        `/api/users/${newUser._id}/posts/${post1._id}/comments/${comment._id}`
+      )
+      .set("Authorization", `Bearer ${jwt}`);
+    expect(res.status).toEqual(200);
+    expect(res.body.text).toEqual("Text 1");
+  });
+  test("unauthenticated users can't their comments on a post", async () => {
+    const newUser = await createUser();
+    const post1 = await createPost1(newUser);
+
+    let comment = new Comment({ text: "Text 1", owner: newUser });
+    comment = await comment.save();
+    const res = await request.get(
+      `/api/users/${newUser._id}/posts/${post1._id}/comments/${comment._id}`
+    );
+
+    expect(res.status).toEqual(401);
+    expect(res.body.error).toBeTruthy();
+  });
+});
+describe("DELETE /api/users/:userId/posts/:postId/comment/:commentId", () => {
+  test("authorized users can delete their comments on a post", async () => {
+    const newUser = await createUser();
+    const newPost = await createPost1(newUser);
+    const jwt = await getUserHeader();
+    let comment = new Comment({
+      text: "Hello",
+      owner: newUser._id,
+      post: newPost._id,
+    });
+    comment = await comment.save();
+    comment = await Comment.findOne({ _id: comment._id })
+      .populate("owner", "_id name")
+      .populate("post", "_id text")
+      .exec();
+
+    const result = await Post.findByIdAndUpdate(
+      newPost._id,
+      {
+        $push: { comments: comment },
+      },
+      { new: true }
+    )
+      .populate("comments", "_id text")
+      .exec();
+
+    const res = await request
+      .delete(
+        `/api/users/${newUser._id}/posts/${newPost._id}/comments/${comment._id}`
+      )
+      .set("Authorization", `Bearer ${jwt}`);
+    console.log("BODY", res.body);
+    expect(res.status).toEqual(200);
+    expect(res.body.text).toEqual("Hello");
+  });
+  test("unauthorized users can't delete other users comments on a post", async () => {
+    const newUser = await createUser();
+    const post1 = await createPost1(newUser);
+
+    let comment = new Comment({ text: "Text 1", owner: newUser });
+    comment = await comment.save();
+    const res = await request.delete(
+      `/api/users/${newUser._id}/posts/${post1._id}/comments/${comment._id}`
+    );
+
+    expect(res.status).toEqual(401);
     expect(res.body.error).toBeTruthy();
   });
 });

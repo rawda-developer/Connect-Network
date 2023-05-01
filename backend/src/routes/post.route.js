@@ -4,7 +4,7 @@ const {
   hasAuthorization,
 } = require("../controllers/auth.controller");
 const {
-  isCommmentOwner,
+  isCommentOwner,
   readAll,
   read,
   create,
@@ -14,13 +14,17 @@ const {
   addComment,
   updateComment,
   commentById,
+  readComment,
+  deleteComment,
 } = require("../controllers/post.controller");
 const { userById } = require("../controllers/user.controller");
 
 const postRouter = express.Router();
 postRouter
   .route("/users/:userId/posts/:postId/comments/:commentId")
-  .put(requireLogin, isCommmentOwner, updateComment);
+  .get(requireLogin, readComment)
+  .put(requireLogin, isCommentOwner, updateComment)
+  .delete(requireLogin, isCommentOwner, deleteComment);
 postRouter
   .route("/users/:userId/posts/:postId/comments")
   .post(requireLogin, addComment);
