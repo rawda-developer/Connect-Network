@@ -17,15 +17,9 @@ const postSchema = new Schema(
     likes: [{ type: Schema.ObjectId, ref: "User" }],
     comments: [
       {
-        text: {
-          type: String,
-          required: "Can't add an empty comment",
-        },
-        owner: {
-          type: Schema.ObjectId,
-          ref: "User",
-        },
-      },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment"
+      }
     ],
     updated: Date,
   },

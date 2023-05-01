@@ -2,6 +2,7 @@ const Post = require("../models/post.model");
 const extend = require("lodash/extend");
 const formidable = require("formidable");
 const fs = require("fs");
+const Comment = require("../models/comment.model");
 const readAll = async (req, res) => {
   try {
     const posts = await Post.find({ owner: req.user._id });
@@ -46,7 +47,9 @@ const create = async (req, res) => {
       post.image = undefined;
       return res.json(post);
     } catch (err) {
-      return res.json({ error: "Sorry we can't create the post right now" });
+      return res
+        .status(400)
+        .json({ error: "Sorry we can't create the post right now" });
     }
   });
 };
@@ -88,8 +91,9 @@ const remove = async (req, res) => {
   }
 };
 const addComment = async (req, res) => {
-  const comment = req.body;
   try {
+    const comment = new Comment(req.body);
+    await comment.save();
     const result = await Post.findByIdAndUpdate(
       req.post._id,
       {
@@ -98,11 +102,65 @@ const addComment = async (req, res) => {
       { new: true }
     )
       .select("comments")
-      .populate("owner", "_id name")
+      .populate("comments.owner", "_id name")
+      .populate("comments", "_id text")
       .exec();
+
     return res.json(result);
   } catch (err) {
     return res.status(400).json({ error: "Sorry we can't create comment" });
   }
 };
-module.exports = { readAll, postById, read, create, edit, remove, addComment };
+const isCommmentOwner = async (req, res, next) => {
+  console.log("COMMENT", req.comment);
+  console.log("AUTH", req.auth);
+  console.log("user", req.user);
+  if (
+    req.comment &&
+    req.comment.owner &&
+    req.auth &&
+    req.comment.owner._id == req.auth._id
+  ) {
+    next();
+  } else res.status(403).json({ error: "Sorry we can't update this comment" });
+};
+const updateComment = async (req, res) => {
+  try {
+    const result = await Comment.findByIdAndUpdate(req.comment._id, req.body, {new: true});
+
+    return res.status(200).json(result);
+  } catch (err) {
+    return res
+      .status(400)
+      .json({ error: "Sorry we can't update this comment right now" });
+  }
+};
+const commentById = async (req, res, next, commentId) => {
+  try {
+    const comment = await Comment.findById(commentId)
+      .populate("owner", "_id name")
+      .populate("post", "_id text")
+      .exec();
+    if (!comment) {
+      return res
+        .status(404)
+        .json({ error: "Sorry we can't find the given comment" });
+    }
+    req.comment = comment;
+    next();
+  } catch (err) {
+    return res.status(400).json({ error: "Sorry something wrong happened" });
+  }
+};
+module.exports = {
+  readAll,
+  postById,
+  commentById,
+  read,
+  create,
+  edit,
+  remove,
+  addComment,
+  updateComment,
+  isCommmentOwner,
+};

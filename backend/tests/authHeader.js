@@ -10,7 +10,7 @@ const createUser = async () => {
     password: "testTest123*&",
   });
   await user.save();
-  const result = await User.findById(user._id);
+  const result = await User.findOne({_id: user._id});
   console.log(result)
   return result;
 };

@@ -3,6 +3,7 @@ const supertest = require("supertest");
 const { app } = require("../src/server");
 const { createPost1, createPost2 } = require("./createPosts");
 const User = require("../src/models/user.model");
+const Comment = require("../src/models/comment.model");
 const { Schema } = require("mongoose");
 const Post = require("../src/models/post.model");
 const { connect } = require("../src/utils/dbConnection");
@@ -17,6 +18,7 @@ afterAll(async () => {
 afterEach(async () => {
   await Post.deleteMany({});
   await User.deleteMany({});
+  await Comment.deleteMany({});
 });
 describe("GET /users/:userId/posts", () => {
   test("a logged in user can get a list of a posts from any users in the system", async () => {
@@ -166,5 +168,46 @@ describe("POST /api/users/:userId/posts/:postId/comment", () => {
       .send({ text: "Hey everyone" });
     expect(res.status).toEqual(404);
     expect(res.body.error).toBeTruthy();
+  });
+});
+describe("PUT /api/users/:userId/posts/:postId/comment/:commentId", () => {
+  test("authenticated users can update their comments on a post", async () => {
+    let newUser = await createUser();
+    const newPost = await createPost1(newUser);
+    const jwt = await getUserHeader();
+    let newComment = new Comment({
+      text: "hello",
+      owner: newUser,
+      post: newPost,
+    });
+    newComment = await newComment.save();
+
+    await Post.findByIdAndUpdate(newPost._id, {
+      $push: {
+        comments: newComment,
+      },
+      $set: {
+        owner: newUser,
+      },
+    })
+      .populate("owner", "_id name")
+      .exec();
+    newUser = await User.findOneAndUpdate(
+      { _id: newUser._id },
+      {
+        $push: {
+          posts: newPost,
+        },
+      }
+    ).populate("posts.owner", "_id text");
+
+    const res = await request
+      .put(
+        `/api/users/${newUser._id}/posts/${newPost._id}/comments/${newComment._id}`
+      )
+      .set("Authorization", `Bearer ${jwt}`)
+      .send({ text: "Hey everyone!!" });
+    expect(res.status).toEqual(200);
+    expect(res.body.text).toEqual("Hey everyone!!");
   });
 });
